@@ -655,7 +655,7 @@ document.getElementById("saveAnimal")
             id: Date.now().toString(),
 
             tag: tag,
-
+            nlis: document.getElementById("animalNlis").value.trim(),
             sex:
                 document.getElementById("animalSex").value,
 
@@ -671,12 +671,21 @@ document.getElementById("saveAnimal")
             sire:
                 document.getElementById("animalSire").value,
 
+            origin:
+                document.getElementById("animalOrigin".value,
+
+            seller:
+                document.getElementById("animalSeller").value.trim(),
+
             paddock:
                 document.getElementById("animalPaddock").value.trim(),
 
             birthWeight:
                 Number(document.getElementById("animalBirthWeight").value) || null,
 
+            currentWeight:
+                Number(document.getElementById("animalCurrentWeight").value) || null,
+                                        
             weights: []
 
         };
@@ -752,6 +761,11 @@ function openAnimal(id) {
             <h2>🐄 ${animal.tag}</h2>
 
             <div class="detail-row">
+            <span>NLIS number</span><br>
+            ${animal.nlis || "Not recorded"}
+            </div>
+            
+            <div class="detail-row">
                 <span>Sex</span><br>
                 ${animal.sex}
             </div>
@@ -771,8 +785,20 @@ function openAnimal(id) {
                 ${animal.paddock || "Not recorded"}
             </div>
 
-        </div>
+            <div class="detail-row">
+                <span>Origin</span><br>
+                ${animal.origin || "Not recorded"}
+            </div>
 
+            <div class="detail-row">
+                <span>Seller</span><br>
+                ${animal.seller || "Not recorded"}
+            </div>
+
+            <div class="detail-row">
+                <span>Current weight</span><br>
+                ${animal.currentWeight != null ? animal.currentWeight + " kg" : "Not recorded"}
+            </div>
 
         <div class="card">
 
