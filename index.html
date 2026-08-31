@@ -364,8 +364,8 @@ input, select {
 <label>Current paddock</label>
 <input id="animalPaddock" placeholder="e.g. Front">
 
-<label>Birth weight (kg)</label>
-<input id="animalBirthWeight" type="number" step="0.1" placeholder="e.g. 38">
+<label>Starting weight (kg)</label>
+<input id="animalStartingWeight" type="number" step="0.1" placeholder="e.g. 38">
 
 <label>Current weight (kg)</label>
 <input id="animalCurrentWeight" type="number" step="0.1" placeholder="e.g. 245">
@@ -618,7 +618,7 @@ function openAddAnimal() {
     document.getElementById("animalBreed").value = "";
     document.getElementById("animalDob").value = "";
     document.getElementById("animalPaddock").value = "";
-    document.getElementById("animalBirthWeight").value = "";
+    document.getElementById("animalStartingWeight").value = "";
 
     showPage("addAnimal");
 }
@@ -688,8 +688,8 @@ document.getElementById("animalOrigin").addEventListener("change", () => {
             paddock:
                 document.getElementById("animalPaddock").value.trim(),
 
-            birthWeight:
-                Number(document.getElementById("animalBirthWeight").value) || null,
+            startingWeight:
+                Number(document.getElementById("animalStartingWeight").value) || null,
 
             currentWeight:
                 Number(document.getElementById("animalCurrentWeight").value) || null,
@@ -849,8 +849,8 @@ function openAnimal(id) {
             <div class="detail-row">
                 Birth weight:
                 <strong>
-                    ${animal.birthWeight
-                        ? animal.birthWeight + " kg"
+                    ${animal.startingWeight
+                        ? animal.startingWeight + " kg"
                         : "Not recorded"}
                 </strong>
             </div>
