@@ -687,12 +687,12 @@ document.getElementById("animalOrigin").addEventListener("change", () => {
                 document.getElementById("animalPaddock").value.trim(),
 
             startingWeight:
-                Number(document.getElementById("animalStartingWeight").value) || null,
+  Number(document.getElementById("animalStartingWeight").value) || null,
 
-            currentWeight:
-                Number(document.getElementById("animalCurrentWeight").value) || null,
-                                        
-         weights: document.getElementById("animalStartingWeight").value
+currentWeight:
+  Number(document.getElementById("animalStartingWeight").value) || null,
+
+weights: document.getElementById("animalStartingWeight").value
   ? [{
       date: new Date().toISOString().split("T")[0],
       weight: Number(document.getElementById("animalStartingWeight").value)
