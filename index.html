@@ -871,6 +871,121 @@ function openAnimal(id) {
 updateDashboard();
 renderAnimals();
     
+document.getElementById("recordWeightBtn").addEventListener("click", () => {
+
+  const tag = document.getElementById("weightAnimalTag").value.trim();
+  const date = document.getElementById("weightRecordDate").value;
+  const weight = Number(document.getElementById("weightRecordValue").value);
+
+  if (!tag || !date || !weight) {
+    alert("Please enter the animal tag, date and weight.");
+    return;
+  }
+
+  const animal = cattle.find(a => String(a.tag).trim() === tag);
+
+  if (!animal) {
+    alert("Animal not found.");
+    return;
+  }
+
+  if (!animal.weights) {
+    animal.weights = [];
+  }
+
+  const previous = animal.weights.length
+    ? animal.weights[animal.weights.length - 1]
+    : null;
+
+  let adg = null;
+
+  if (previous) {
+    const days =
+      (new Date(date) - new Date(previous.date))
+      / (1000 * 60 * 60 * 24);
+
+    if (days > 0) {
+      adg = (weight - Number(previous.weight)) / days;
+    }
+  }
+
+  animal.weights.push({
+    date: date,
+    weight: weight
+  });
+
+  animal.currentWeight = weight;
+
+  saveData();
+
+  let result = `
+    <h3>Animal ${animal.tag}</h3>
+
+    <p>
+      <strong>Previous weight:</strong>
+      ${previous ? previous.weight + " kg" : "No previous weight"}
+    </p>
+
+    <p>
+      <strong>Previous date:</strong>
+      ${previous ? previous.date : "—"}
+    </p>
+
+    <p>
+      <strong>New weight:</strong>
+      ${weight} kg
+    </p>
+  `;
+
+  if (adg !== null) {
+    result += `
+      <p>
+        <strong>ADG:</strong>
+        ${adg.toFixed(2)} kg/day
+      </p>
+    `;
+  }
+
+  result += `
+    <h3>Weight history</h3>
+
+    <div class="detail-row">
+  `;
+
+  animal.weights.forEach((record, index) => {
+
+    let recordAdg = "";
+
+    if (index > 0) {
+      const previousRecord = animal.weights[index - 1];
+
+      const days =
+        (new Date(record.date) - new Date(previousRecord.date))
+        / (1000 * 60 * 60 * 24);
+
+      if (days > 0) {
+        const gain =
+          Number(record.weight) - Number(previousRecord.weight);
+
+        recordAdg =
+          ` — ADG: ${(gain / days).toFixed(2)} kg/day`;
+      }
+    }
+
+    result += `
+      <p>
+        <strong>${record.date}</strong>
+        — ${record.weight} kg${recordAdg}
+      </p>
+    `;
+  });
+
+  result += `</div>`;
+
+  document.getElementById("weightResult").innerHTML = result;
+
+  document.getElementById("weightRecordValue").value = "";
+});
 
 </script>
 
