@@ -315,39 +315,60 @@ input, select {
 
         <h2>Add animal</h2>
 
-        <label>Tag / NLIS number</label>
-        <input id="animalTag" placeholder="e.g. DS025">
+     <label>Tag number</label>
+<input id="animalTag" placeholder="e.g. DS025">
 
-        <label>Sex</label>
-        <select id="animalSex">
-            <option value="Cow">Cow</option>
-            <option value="Bull">Bull</option>
-            <option value="Heifer">Heifer</option>
-            <option value="Steer">Steer</option>
-            <option value="Calf">Calf</option>
-        </select>
+<label>NLIS number</label>
+<input id="animalNlis" placeholder="e.g. 982 123456789012">
 
-        <label>Breed</label>
-        <input id="animalBreed" placeholder="e.g. Droughtmaster x Senepol">
+<label>Sex</label>
+<select id="animalSex">
+  <option value="Cow">Cow</option>
+  <option value="Bull">Bull</option>
+  <option value="Heifer">Heifer</option>
+  <option value="Steer">Steer</option>
+  <option value="Calf">Calf</option>
+</select>
 
-        <label>Date of birth</label>
-        <input id="animalDob" type="date">
+<label>Breed</label>
+<input id="animalBreed" placeholder="e.g. Droughtmaster x Senepol">
 
-        <label>Dam (mother)</label>
-        <select id="animalDam">
-            <option value="">Unknown / not recorded</option>
-        </select>
+<label>Date of birth</label>
+<input id="animalDob" type="date">
 
-        <label>Sire (father)</label>
-        <select id="animalSire">
-            <option value="">Unknown / not recorded</option>
-        </select>
+<label>Origin</label>
+<select id="animalOrigin">
+  <option value="">Select origin</option>
+  <option value="Born on property">Born on property</option>
+  <option value="Purchased">Purchased</option>
+  <option value="Agisted">Agisted</option>
+  <option value="Gift">Gift</option>
+  <option value="Other">Other</option>
+</select>
 
-        <label>Current paddock</label>
-        <input id="animalPaddock" placeholder="e.g. Front">
+<div id="sellerGroup" style="display:none;">
+  <label>Seller</label>
+  <input id="animalSeller" placeholder="Seller name / business">
+</div>
 
-        <label>Birth weight (kg)</label>
-        <input id="animalBirthWeight" type="number" step="0.1" placeholder="e.g. 38">
+<label>Dam (mother)</label>
+<select id="animalDam">
+  <option value="">Unknown / not recorded</option>
+</select>
+
+<label>Sire (father)</label>
+<select id="animalSire">
+  <option value="">Unknown / not recorded</option>
+</select>
+
+<label>Current paddock</label>
+<input id="animalPaddock" placeholder="e.g. Front">
+
+<label>Birth weight (kg)</label>
+<input id="animalBirthWeight" type="number" step="0.1" placeholder="e.g. 38">
+
+<label>Current weight (kg)</label>
+<input id="animalCurrentWeight" type="number" step="0.1" placeholder="e.g. 245">
 
         <div class="form-buttons">
             <button class="primary" id="saveAnimal">
