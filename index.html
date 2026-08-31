@@ -7,6 +7,14 @@
 
 <style>
 * { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f1e8;
+    color: #263326;
+}
+
 #loginScreen {
     max-width: 400px;
     margin: 80px auto;
@@ -17,9 +25,7 @@
     text-align: center;
 }
 
-#loginScreen h2 {
-    margin-bottom: 25px;
-}
+#loginScreen h2 { margin-bottom: 25px; }
 
 #loginScreen input {
     width: 100%;
@@ -45,15 +51,9 @@
     color: #c0392b;
     margin-top: 15px;
 }
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f1e8;
-    color: #263326;
-}
 
 .app {
-    max-width: 700px;
+    max-width: 1200px;
     margin: auto;
     min-height: 100vh;
     display: none;
@@ -100,8 +100,13 @@ main {
     padding: 18px;
 }
 
-.page { display: none; }
-.page.active { display: block; }
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
 
 .stats {
     display: grid;
@@ -150,6 +155,14 @@ button.secondary {
     cursor: pointer;
 }
 
+button.small {
+    padding: 8px 10px;
+    background: #eee;
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
 .animal {
     display: flex;
     justify-content: space-between;
@@ -172,13 +185,15 @@ label {
     font-weight: bold;
 }
 
-input, select {
+input,
+select {
     width: 100%;
     padding: 12px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 16px;
+    background: white;
 }
 
 .form-buttons {
@@ -198,20 +213,175 @@ input, select {
     color: #777;
 }
 
-.adg {
-    font-size: 25px;
-    font-weight: bold;
-}
-
 .empty {
     text-align: center;
     color: #777;
     padding: 25px;
 }
 
+/* WEIGHT PAGE */
+
+.weight-entry {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 160px;
+    gap: 10px;
+    align-items: end;
+}
+
+.weight-entry label {
+    margin-top: 0;
+}
+
+.weight-entry button {
+    width: 100%;
+}
+
+.filters {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr 1.5fr 1.5fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.filters label {
+    margin-top: 0;
+    font-size: 13px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.weight-table {
+    width: 100%;
+    min-width: 1150px;
+    border-collapse: collapse;
+    background: white;
+}
+
+.weight-table th,
+.weight-table td {
+    padding: 11px 10px;
+    border-bottom: 1px solid #e6e6e6;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.weight-table th {
+    background: #eeeade;
+    font-size: 13px;
+}
+
+.weight-table td.number,
+.weight-table th.number {
+    text-align: right;
+}
+
+.weight-table tbody tr:hover {
+    background: #faf9f4;
+}
+
+.tag-link {
+    color: #304b32;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.adg-good {
+    font-weight: bold;
+}
+
+.adg-negative {
+    font-weight: bold;
+}
+
+.history-row {
+    display: none;
+    background: #faf9f4;
+}
+
+.history-row.open {
+    display: table-row;
+}
+
+.history-inner {
+    padding: 8px 0;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.history-table th,
+.history-table td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.history-table th {
+    background: #f0eee6;
+    font-size: 12px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.summary-box {
+    background: #f6f5ef;
+    border-radius: 9px;
+    padding: 12px;
+}
+
+.summary-box .label {
+    color: #777;
+    font-size: 12px;
+}
+
+.summary-box .value {
+    font-size: 19px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.notice {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    background: #f6f5ef;
+    border-radius: 8px;
+}
+
 @media (min-width: 600px) {
     .stats {
         grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+
+    .weight-entry {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .filters {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .filters .search {
+        grid-column: span 2;
+    }
+
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 </style>
@@ -220,81 +390,212 @@ input, select {
 <body>
 
 <div id="loginScreen">
+
     <h2>GrazeLink Login</h2>
 
-    <input type="email" id="loginEmail" placeholder="Email">
-    <input type="password" id="loginPassword" placeholder="Password">
+    <input
+        type="email"
+        id="loginEmail"
+        placeholder="Email"
+    >
 
-    <button id="loginButton">Log in</button>
+    <input
+        type="password"
+        id="loginPassword"
+        placeholder="Password"
+    >
+
+    <button id="loginButton">
+        Log in
+    </button>
 
     <p id="loginMessage"></p>
+
 </div>
-    <div class="app">
+
+
+<div class="app">
 
 <header>
+
     <h1>🐄 GrazeLink</h1>
-    <p>Australian cattle management</p>
+
+    <p>
+        Australian cattle management
+    </p>
+
 </header>
 
+
 <nav>
-    <button class="nav-btn active" data-page="dashboard">Home</button>
-    <button class="nav-btn" data-page="cattle">Cattle</button>
-    <button class="nav-btn" data-page="breeding">Breeding</button>
-    <button class="nav-btn" data-page="records">Records</button>
+
+    <button
+        class="nav-btn active"
+        data-page="dashboard">
+
+        Home
+
+    </button>
+
+    <button
+        class="nav-btn"
+        data-page="cattle">
+
+        Cattle
+
+    </button>
+
+    <button
+        class="nav-btn"
+        data-page="breeding">
+
+        Breeding
+
+    </button>
+
+    <button
+        class="nav-btn"
+        data-page="records">
+
+        Records
+
+    </button>
+
 </nav>
+
 
 <main>
 
-<!-- DASHBOARD -->
-<section id="dashboard" class="page active">
 
-    <h2>Good morning 👋</h2>
+<!-- DASHBOARD -->
+
+<section
+    id="dashboard"
+    class="page active">
+
+    <h2>
+        Good morning 👋
+    </h2>
+
 
     <div class="stats">
-        <div class="card">
-            <div class="stat-number" id="totalCattle">0</div>
-            <div class="stat-label">Total cattle</div>
-        </div>
 
         <div class="card">
-            <div class="stat-number" id="totalCows">0</div>
-            <div class="stat-label">Breeders</div>
+
+            <div
+                class="stat-number"
+                id="totalCattle">
+
+                0
+
+            </div>
+
+            <div class="stat-label">
+                Total cattle
+            </div>
+
         </div>
 
-        <div class="card">
-            <div class="stat-number" id="totalBulls">0</div>
-            <div class="stat-label">Bulls</div>
-        </div>
 
         <div class="card">
-            <div class="stat-number" id="totalCalves">0</div>
-            <div class="stat-label">Calves</div>
+
+            <div
+                class="stat-number"
+                id="totalCows">
+
+                0
+
+            </div>
+
+            <div class="stat-label">
+                Breeders
+            </div>
+
         </div>
+
+
+        <div class="card">
+
+            <div
+                class="stat-number"
+                id="totalBulls">
+
+                0
+
+            </div>
+
+            <div class="stat-label">
+                Bulls
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div
+                class="stat-number"
+                id="totalCalves">
+
+                0
+
+            </div>
+
+            <div class="stat-label">
+                Calves
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="card">
-        <h3>Quick actions</h3>
 
-        <button class="primary" id="addAnimalButton">
+    <div class="card">
+
+        <h3>
+            Quick actions
+        </h3>
+
+        <button
+            class="primary"
+            id="addAnimalButton">
+
             + Add cattle
+
         </button>
+
     </div>
 
+
     <div class="card">
-        <h3>Recent cattle</h3>
+
+        <h3>
+            Recent cattle
+        </h3>
+
         <div id="recentAnimals"></div>
+
     </div>
 
 </section>
 
 
 <!-- CATTLE -->
-<section id="cattle" class="page">
 
-    <h2>Your cattle</h2>
+<section
+    id="cattle"
+    class="page">
 
-    <button class="primary" id="addAnimalButton2">
+    <h2>
+        Your cattle
+    </h2>
+
+    <button
+        class="primary"
+        id="addAnimalButton2">
+
         + Add animal
+
     </button>
 
     <br><br>
@@ -305,73 +606,203 @@ input, select {
 
 
 <!-- ADD ANIMAL -->
-<section id="addAnimal" class="page">
 
-    <button class="secondary back" id="backToCattle">
+<section
+    id="addAnimal"
+    class="page">
+
+    <button
+        class="secondary back"
+        id="backToCattle">
+
         ← Back
+
     </button>
+
 
     <div class="card">
 
-        <h2>Add animal</h2>
+        <h2>
+            Add animal
+        </h2>
 
-     <label>Tag number</label>
-<input id="animalTag" placeholder="e.g. DS025">
 
-<label>NLIS number</label>
-<input id="animalNlis" placeholder="e.g. 982 123456789012">
+        <label>
+            Tag number
+        </label>
 
-<label>Sex</label>
-<select id="animalSex">
-  <option value="Cow">Cow</option>
-  <option value="Bull">Bull</option>
-  <option value="Heifer">Heifer</option>
-  <option value="Steer">Steer</option>
-  <option value="Calf">Calf</option>
-</select>
+        <input
+            id="animalTag"
+            placeholder="e.g. DS025"
+        >
 
-<label>Breed</label>
-<input id="animalBreed" placeholder="e.g. Droughtmaster x Senepol">
 
-<label>Date of birth</label>
-<input id="animalDob" type="date">
+        <label>
+            NLIS number
+        </label>
 
-<label>Origin</label>
-<select id="animalOrigin">
-  <option value="">Select origin</option>
-  <option value="Born on property">Born on property</option>
-  <option value="Purchased">Purchased</option>
-  <option value="Agisted">Agisted</option>
-  <option value="Gift">Gift</option>
-  <option value="Other">Other</option>
-</select>
+        <input
+            id="animalNlis"
+            placeholder="e.g. 982 123456789012"
+        >
 
-<div id="sellerGroup" style="display:none;">
-  <label>Seller</label>
-  <input id="animalSeller" placeholder="Seller name / business">
-</div>
 
-<label>Dam (mother)</label>
-<select id="animalDam">
-  <option value="">Unknown / not recorded</option>
-</select>
+        <label>
+            Sex
+        </label>
 
-<label>Sire (father)</label>
-<select id="animalSire">
-  <option value="">Unknown / not recorded</option>
-</select>
+        <select id="animalSex">
 
-<label>Current paddock</label>
-<input id="animalPaddock" placeholder="e.g. Front">
+            <option value="Cow">
+                Cow
+            </option>
 
-<label>Starting weight (kg)</label>
-<input id="animalStartingWeight" type="number" step="0.1" placeholder="e.g. 300">
+            <option value="Bull">
+                Bull
+            </option>
+
+            <option value="Heifer">
+                Heifer
+            </option>
+
+            <option value="Steer">
+                Steer
+            </option>
+
+            <option value="Calf">
+                Calf
+            </option>
+
+        </select>
+
+
+        <label>
+            Breed
+        </label>
+
+        <input
+            id="animalBreed"
+            placeholder="e.g. Droughtmaster x Senepol"
+        >
+
+
+        <label>
+            Date of birth
+        </label>
+
+        <input
+            id="animalDob"
+            type="date"
+        >
+
+
+        <label>
+            Origin
+        </label>
+
+        <select id="animalOrigin">
+
+            <option value="">
+                Select origin
+            </option>
+
+            <option value="Born on property">
+                Born on property
+            </option>
+
+            <option value="Purchased">
+                Purchased
+            </option>
+
+            <option value="Agisted">
+                Agisted
+            </option>
+
+            <option value="Gift">
+                Gift
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+
+
+        <div
+            id="sellerGroup"
+            style="display:none;">
+
+            <label>
+                Seller
+            </label>
+
+            <input
+                id="animalSeller"
+                placeholder="Seller name / business"
+            >
+
+        </div>
+
+
+        <label>
+            Dam (mother)
+        </label>
+
+        <select id="animalDam">
+
+            <option value="">
+                Unknown / not recorded
+            </option>
+
+        </select>
+
+
+        <label>
+            Sire (father)
+        </label>
+
+        <select id="animalSire">
+
+            <option value="">
+                Unknown / not recorded
+            </option>
+
+        </select>
+
+
+        <label>
+            Current paddock
+        </label>
+
+        <input
+            id="animalPaddock"
+            placeholder="e.g. Front"
+        >
+
+
+        <label>
+            Starting weight (kg)
+        </label>
+
+        <input
+            id="animalStartingWeight"
+            type="number"
+            step="0.1"
+            placeholder="e.g. 300"
+        >
 
 
         <div class="form-buttons">
-            <button class="primary" id="saveAnimal">
+
+            <button
+                class="primary"
+                id="saveAnimal">
+
                 Save animal
+
             </button>
+
         </div>
 
     </div>
@@ -380,10 +811,17 @@ input, select {
 
 
 <!-- ANIMAL DETAIL -->
-<section id="animalDetail" class="page">
 
-    <button class="secondary back" id="backFromDetail">
+<section
+    id="animalDetail"
+    class="page">
+
+    <button
+        class="secondary back"
+        id="backFromDetail">
+
         ← Back
+
     </button>
 
     <div id="animalDetailContent"></div>
@@ -392,456 +830,1846 @@ input, select {
 
 
 <!-- BREEDING -->
-<section id="breeding" class="page">
 
-    <h2>🧬 Breeding & genetics</h2>
+<section
+    id="breeding"
+    class="page">
+
+    <h2>
+        🧬 Breeding & genetics
+    </h2>
+
 
     <div class="card">
-        <h3>Family records</h3>
+
+        <h3>
+            Family records
+        </h3>
+
         <p>
             GrazeLink links each calf to its dam and sire,
             allowing you to follow genetics through generations.
         </p>
+
     </div>
+
 
     <div class="card">
-        <h3>What we'll add next</h3>
-        <div class="detail-row">🐮 Joining records</div>
-        <div class="detail-row">🤰 Pregnancy testing</div>
-        <div class="detail-row">🍼 Calving records</div>
-        <div class="detail-row">🧬 Family trees</div>
-        <div class="detail-row">📊 Sire performance</div>
-        <div class="detail-row">📈 Dam performance</div>
+
+        <h3>
+            What we'll add next
+        </h3>
+
+        <div class="detail-row">
+            🐮 Joining records
+        </div>
+
+        <div class="detail-row">
+            🤰 Pregnancy testing
+        </div>
+
+        <div class="detail-row">
+            🍼 Calving records
+        </div>
+
+        <div class="detail-row">
+            🧬 Family trees
+        </div>
+
+        <div class="detail-row">
+            📊 Sire performance
+        </div>
+
+        <div class="detail-row">
+            📈 Dam performance
+        </div>
+
     </div>
 
 </section>
 
-<!-- WEIGHT RECORDS -->
-<section id="weights" class="page">
 
-  <button class="secondary back" onclick="showPage('records')">
-    ← Back
-  </button>
+<!-- WEIGHTS -->
 
-  <h2>Weight Records</h2>
+<section
+    id="weights"
+    class="page">
 
-  <div class="card">
 
-    <h3>⚖️ Record Weight</h3>
+    <button
+        class="secondary back"
+        onclick="showPage('records')">
 
-    <label>Animal Tag / ID</label>
-    <input id="weightAnimalTag" type="text" placeholder="e.g. 1">
+        ← Back
 
-    <label>Date weighed</label>
-    <input id="weightRecordDate" type="date">
+    </button>
 
-    <label>Weight (kg)</label>
-    <input id="weightRecordValue" type="number" step="0.1" placeholder="e.g. 366">
 
-    <div class="form-buttons">
-      <button class="primary" id="recordWeightBtn">
-        Record weight
-      </button>
+    <h2>
+        ⚖️ Weights & ADG
+    </h2>
+
+
+    <!-- RECORD NEW WEIGHT -->
+
+    <div class="card">
+
+        <h3>
+            Record new weight
+        </h3>
+
+
+        <div class="weight-entry">
+
+
+            <div>
+
+                <label>
+                    Animal tag
+                </label>
+
+                <select
+                    id="weightAnimalSelect">
+
+                    <option value="">
+                        Select animal
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Date weighed
+                </label>
+
+                <input
+                    id="weightRecordDate"
+                    type="date"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Weight (kg)
+                </label>
+
+                <input
+                    id="weightRecordValue"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    placeholder="e.g. 366"
+                >
+
+            </div>
+
+
+            <button
+                class="primary"
+                id="recordWeightBtn">
+
+                Record weight
+
+            </button>
+
+
+        </div>
+
+
+        <div
+            id="weightEntryMessage"
+            class="notice">
+        </div>
+
     </div>
 
-  </div>
 
-  <div class="card" id="weightResult">
-    <h3>Animal Weight Information</h3>
-    <p>Enter an animal tag to see its previous weight and ADG.</p>
-  </div>
+    <!-- HERD WEIGHT TABLE -->
+
+    <div class="card">
+
+        <h3>
+            Herd weight overview
+        </h3>
+
+
+        <div class="filters">
+
+
+            <div class="search">
+
+                <label>
+                    Search tag / NLIS
+                </label>
+
+                <input
+                    id="weightSearch"
+                    placeholder="Search..."
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Sex
+                </label>
+
+                <select
+                    id="weightSexFilter">
+
+                    <option value="">
+                        All sexes
+                    </option>
+
+                    <option value="Cow">
+                        Cow
+                    </option>
+
+                    <option value="Bull">
+                        Bull
+                    </option>
+
+                    <option value="Heifer">
+                        Heifer
+                    </option>
+
+                    <option value="Steer">
+                        Steer
+                    </option>
+
+                    <option value="Calf">
+                        Calf
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Breed
+                </label>
+
+                <select
+                    id="weightBreedFilter">
+
+                    <option value="">
+                        All breeds
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Paddock
+                </label>
+
+                <select
+                    id="weightPaddockFilter">
+
+                    <option value="">
+                        All paddocks
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Sort by
+                </label>
+
+                <select
+                    id="weightSort">
+
+                    <option value="tag">
+                        Tag
+                    </option>
+
+                    <option value="sex">
+                        Sex
+                    </option>
+
+                    <option value="breed">
+                        Breed
+                    </option>
+
+                    <option value="paddock">
+                        Paddock
+                    </option>
+
+                    <option value="startingWeight">
+                        Starting weight
+                    </option>
+
+                    <option value="currentWeight">
+                        Current weight
+                    </option>
+
+                    <option value="gain">
+                        Total gain
+                    </option>
+
+                    <option value="adg">
+                        Latest ADG
+                    </option>
+
+                    <option value="overallAdg">
+                        Overall ADG
+                    </option>
+
+                    <option value="date">
+                        Latest weighing date
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <div id="weightTableContainer"></div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            ADG
+        </h3>
+
+        <p class="tag">
+
+            Latest ADG is calculated from the
+            two most recent weighings.
+
+            Overall ADG is calculated from the
+            first and latest recorded weights.
+
+        </p>
+
+    </div>
+
 
 </section>
+
+
 <!-- RECORDS -->
-<section id="records" class="page">
 
-    <h2>Records</h2>
+<section
+    id="records"
+    class="page">
 
-  <div class="card" onclick="showPage('weights')">
-  <h3>⚖️ Weights & ADG</h3>
-  <p>
-    Record cattle weights and calculate Average Daily Gain.
-  </p>
-</div>
+    <h2>
+        Records
+    </h2>
 
-    <div class="card">
-        <h3>💉 Health</h3>
-        <p>Treatments, vaccinations and drenching records.</p>
+
+    <div
+        class="card"
+        onclick="showPage('weights')"
+        style="cursor:pointer;">
+
+        <h3>
+            ⚖️ Weights & ADG
+        </h3>
+
+        <p>
+            Record cattle weights and view herd performance.
+        </p>
+
     </div>
 
-    <div class="card">
-        <h3>📍 Movements</h3>
-        <p>Paddock and mob movements.</p>
-    </div>
 
     <div class="card">
-        <h3>💰 Sales</h3>
-        <p>Sale weights, prices, costs and performance.</p>
+
+        <h3>
+            💉 Health
+        </h3>
+
+        <p>
+            Treatments, vaccinations and drenching records.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            📍 Movements
+        </h3>
+
+        <p>
+            Paddock and mob movements.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            💰 Sales
+        </h3>
+
+        <p>
+            Sale weights, prices, costs and performance.
+        </p>
+
     </div>
 
 </section>
+
 
 </main>
+
 </div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL = "https://jdjmetnozwilklthncqn.supabase.co";
-const SUPABASE_KEY = "sb_publishable_domdcBsubyJTDrTT8O6n-w_LpzWf06Y";
 
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
+
+<script>
+
+/* =========================
+   SUPABASE
+========================= */
+
+const SUPABASE_URL =
+    "https://jdjmetnozwilklthncqn.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_domdcBsubyJTDrTT8O6n-w_LpzWf06Y";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================
+   LOGIN
+========================= */
+
+const loginButton =
+    document.getElementById(
+        "loginButton"
+    );
+
+
+loginButton.addEventListener(
+    "click",
+    async () => {
+
+        const email =
+            document.getElementById(
+                "loginEmail"
+            ).value.trim();
+
+        const password =
+            document.getElementById(
+                "loginPassword"
+            ).value;
+
+        const message =
+            document.getElementById(
+                "loginMessage"
+            );
+
+        message.textContent =
+            "Logging in...";
+
+
+        const { error } =
+            await supabaseClient.auth
+                .signInWithPassword({
+
+                    email,
+                    password
+
+                });
+
+
+        if (error) {
+
+            message.textContent =
+                error.message;
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "loginScreen"
+        ).style.display = "none";
+
+
+        document.querySelector(
+            ".app"
+        ).style.display = "block";
+
+
+        updateDashboard();
+        renderAnimals();
+
+    }
 );
 
-const loginButton = document.getElementById("loginButton");
 
-loginButton.addEventListener("click", async () => {
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-    const message = document.getElementById("loginMessage");
+/* =========================
+   CATTLE DATA
+========================= */
 
-    message.textContent = "Logging in...";
+let cattle =
+    JSON.parse(
+        localStorage.getItem(
+            "grazelinkCattle"
+        ) || "[]"
+    );
 
-    const { error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
-
-    if (error) {
-        message.textContent = error.message;
-        return;
-    }
-
-    document.getElementById("loginScreen").style.display = "none";
-    document.querySelector(".app").style.display = "block";
-
-    updateDashboard();
-    renderAnimals();
-});
-
-let cattle = JSON.parse(localStorage.getItem("grazelinkCattle") || "[]");
 
 function saveData() {
-    localStorage.setItem("grazelinkCattle", JSON.stringify(cattle));
+
+    localStorage.setItem(
+        "grazelinkCattle",
+        JSON.stringify(cattle)
+    );
+
 }
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function escapeHtml(value) {
+
+    return String(
+        value ?? ""
+    )
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+function todayString() {
+
+    return new Date()
+        .toISOString()
+        .split("T")[0];
+
+}
+
+
+function formatDate(date) {
+
+    if (!date) return "—";
+
+    const parts =
+        date.split("-");
+
+    if (parts.length !== 3) {
+        return date;
+    }
+
+    return (
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0]
+    );
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
 
 function showPage(pageId) {
 
-    document.querySelectorAll(".page").forEach(page => {
-        page.classList.remove("active");
-    });
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
 
-    document.getElementById(pageId).classList.add("active");
+            page.classList.remove(
+                "active"
+            );
 
-    document.querySelectorAll(".nav-btn").forEach(button => {
-        button.classList.remove("active");
+        });
 
-        if (button.dataset.page === pageId) {
-            button.classList.add("active");
-        }
-    });
+
+    const page =
+        document.getElementById(
+            pageId
+        );
+
+
+    if (page) {
+
+        page.classList.add(
+            "active"
+        );
+
+    }
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(button => {
+
+            button.classList.remove(
+                "active"
+            );
+
+
+            if (
+                button.dataset.page ===
+                pageId
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+
+        });
+
 
     updateDashboard();
     renderAnimals();
+
+
+    if (pageId === "weights") {
+
+        renderWeightPage();
+
+    }
+
 }
 
-document.querySelectorAll(".nav-btn").forEach(button => {
-    button.addEventListener("click", () => {
-        showPage(button.dataset.page);
-    });
-});
 
+document
+    .querySelectorAll(".nav-btn")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                showPage(
+                    button.dataset.page
+                );
+
+            }
+        );
+
+    });
+
+
+/* =========================
+   DASHBOARD
+========================= */
 
 function updateDashboard() {
 
-    document.getElementById("totalCattle").textContent = cattle.length;
+    document.getElementById(
+        "totalCattle"
+    ).textContent =
+        cattle.length;
 
-    document.getElementById("totalCows").textContent =
-        cattle.filter(a => a.sex === "Cow").length;
 
-    document.getElementById("totalBulls").textContent =
-        cattle.filter(a => a.sex === "Bull").length;
-
-    document.getElementById("totalCalves").textContent =
-        cattle.filter(a =>
-            a.sex === "Calf" ||
-            a.sex === "Heifer" ||
-            a.sex === "Steer"
+    document.getElementById(
+        "totalCows"
+    ).textContent =
+        cattle.filter(
+            a => a.sex === "Cow"
         ).length;
 
-    const recent = document.getElementById("recentAnimals");
+
+    document.getElementById(
+        "totalBulls"
+    ).textContent =
+        cattle.filter(
+            a => a.sex === "Bull"
+        ).length;
+
+
+    document.getElementById(
+        "totalCalves"
+    ).textContent =
+        cattle.filter(
+            a =>
+                a.sex === "Calf" ||
+                a.sex === "Heifer" ||
+                a.sex === "Steer"
+        ).length;
+
+
+    const recent =
+        document.getElementById(
+            "recentAnimals"
+        );
+
 
     if (cattle.length === 0) {
+
         recent.innerHTML =
-            '<div class="empty">No cattle entered yet.</div>';
+            '<div class="empty">' +
+            'No cattle entered yet.' +
+            '</div>';
+
         return;
+
     }
 
-    recent.innerHTML = cattle.slice(-5).reverse().map(a => `
-        <div class="animal card" onclick="openAnimal('${a.id}')">
-            <div>
-                <strong>${a.tag}</strong>
-                <div class="tag">${a.sex} · ${a.breed || "Breed not recorded"}</div>
-            </div>
-            <div>›</div>
-        </div>
-    `).join("");
+
+    recent.innerHTML =
+        cattle
+            .slice(-5)
+            .reverse()
+            .map(
+                a => `
+
+                <div
+                    class="animal card"
+                    onclick="openAnimal('${escapeHtml(a.id)}')">
+
+                    <div>
+
+                        <strong>
+                            ${escapeHtml(a.tag)}
+                        </strong>
+
+                        <div class="tag">
+
+                            ${escapeHtml(a.sex)}
+                            ·
+                            ${escapeHtml(
+                                a.breed ||
+                                "Breed not recorded"
+                            )}
+
+                        </div>
+
+                    </div>
+
+                    <div>
+                        ›
+                    </div>
+
+                </div>
+
+            `
+            )
+            .join("");
+
 }
 
+
+/* =========================
+   CATTLE LIST
+========================= */
 
 function renderAnimals() {
 
-    const list = document.getElementById("animalList");
+    const list =
+        document.getElementById(
+            "animalList"
+        );
+
+
+    if (!list) return;
+
 
     if (cattle.length === 0) {
+
         list.innerHTML =
-            '<div class="card empty">No cattle yet.<br><br>Add your first animal above.</div>';
+            '<div class="card empty">' +
+            'No cattle yet.<br><br>' +
+            'Add your first animal above.' +
+            '</div>';
+
         return;
+
     }
 
-    list.innerHTML = cattle.map(a => `
-        <div class="animal card" onclick="openAnimal('${a.id}')">
-            <div>
-                <strong>${a.tag}</strong>
-                <div class="tag">
-                    ${a.sex} · ${a.breed || "Breed not recorded"}
+
+    const sorted =
+        [...cattle].sort(
+            (a, b) =>
+                String(a.tag).localeCompare(
+                    String(b.tag),
+                    undefined,
+                    {
+                        numeric: true,
+                        sensitivity: "base"
+                    }
+                )
+        );
+
+
+    list.innerHTML =
+        sorted
+            .map(
+                a => `
+
+                <div
+                    class="animal card"
+                    onclick="openAnimal('${escapeHtml(a.id)}')">
+
+                    <div>
+
+                        <strong>
+                            ${escapeHtml(a.tag)}
+                        </strong>
+
+                        <div class="tag">
+
+                            ${escapeHtml(a.sex)}
+                            ·
+                            ${escapeHtml(
+                                a.breed ||
+                                "Breed not recorded"
+                            )}
+
+                            ${
+                                a.paddock
+                                ? " · " +
+                                  escapeHtml(
+                                      a.paddock
+                                  )
+                                : ""
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <div>
+                        ›
+                    </div>
+
                 </div>
-            </div>
-            <div>›</div>
-        </div>
-    `).join("");
+
+            `
+            )
+            .join("");
+
 }
 
+
+/* =========================
+   PARENTS
+========================= */
 
 function populateParents() {
 
-    const dam = document.getElementById("animalDam");
-    const sire = document.getElementById("animalSire");
+    const dam =
+        document.getElementById(
+            "animalDam"
+        );
+
+    const sire =
+        document.getElementById(
+            "animalSire"
+        );
+
 
     dam.innerHTML =
-        '<option value="">Unknown / not recorded</option>';
+        '<option value="">' +
+        'Unknown / not recorded' +
+        '</option>';
+
 
     sire.innerHTML =
-        '<option value="">Unknown / not recorded</option>';
+        '<option value="">' +
+        'Unknown / not recorded' +
+        '</option>';
+
 
     cattle.forEach(a => {
 
-        if (a.sex === "Cow" || a.sex === "Heifer") {
+
+        if (
+            a.sex === "Cow" ||
+            a.sex === "Heifer"
+        ) {
+
             dam.innerHTML +=
-                `<option value="${a.id}">${a.tag}</option>`;
+                `<option value="${escapeHtml(a.id)}">
+                    ${escapeHtml(a.tag)}
+                </option>`;
+
         }
 
-        if (a.sex === "Bull") {
+
+        if (
+            a.sex === "Bull"
+        ) {
+
             sire.innerHTML +=
-                `<option value="${a.id}">${a.tag}</option>`;
+                `<option value="${escapeHtml(a.id)}">
+                    ${escapeHtml(a.tag)}
+                </option>`;
+
         }
 
     });
+
 }
 
+
+/* =========================
+   ADD ANIMAL
+========================= */
 
 function openAddAnimal() {
 
     populateParents();
 
-    document.getElementById("animalTag").value = "";
-    document.getElementById("animalBreed").value = "";
-    document.getElementById("animalDob").value = "";
-    document.getElementById("animalPaddock").value = "";
-    document.getElementById("animalStartingWeight").value = "";
 
-    showPage("addAnimal");
+    document.getElementById(
+        "animalTag"
+    ).value = "";
+
+
+    document.getElementById(
+        "animalNlis"
+    ).value = "";
+
+
+    document.getElementById(
+        "animalSex"
+    ).value = "Cow";
+
+
+    document.getElementById(
+        "animalBreed"
+    ).value = "";
+
+
+    document.getElementById(
+        "animalDob"
+    ).value = "";
+
+
+    document.getElementById(
+        "animalOrigin"
+    ).value = "";
+
+
+    document.getElementById(
+        "animalSeller"
+    ).value = "";
+
+
+    document.getElementById(
+        "sellerGroup"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "animalDam"
+    ).value = "";
+
+
+    document.getElementById(
+        "animalSire"
+    ).value = "";
+
+
+    document.getElementById(
+        "animalPaddock"
+    ).value = "";
+
+
+    document.getElementById(
+        "animalStartingWeight"
+    ).value = "";
+
+
+    showPage(
+        "addAnimal"
+    );
+
 }
 
 
-document.getElementById("addAnimalButton")
-    .addEventListener("click", openAddAnimal);
-
-document.getElementById("addAnimalButton2")
-    .addEventListener("click", openAddAnimal);
-
-
-document.getElementById("backToCattle")
-    .addEventListener("click", () => showPage("cattle"));
+document.getElementById(
+    "addAnimalButton"
+).addEventListener(
+    "click",
+    openAddAnimal
+);
 
 
-document.getElementById("backFromDetail")
-    .addEventListener("click", () => showPage("cattle"));
+document.getElementById(
+    "addAnimalButton2"
+).addEventListener(
+    "click",
+    openAddAnimal
+);
 
 
+document.getElementById(
+    "backToCattle"
+).addEventListener(
+    "click",
+    () => showPage("cattle")
+);
 
-document.getElementById("animalOrigin").addEventListener("change", () => {
-    const sellerGroup = document.getElementById("sellerGroup");
-    sellerGroup.style.display =
-        document.getElementById("animalOrigin").value === "Purchased"
+
+document.getElementById(
+    "backFromDetail"
+).addEventListener(
+    "click",
+    () => showPage("cattle")
+);
+
+
+/* =========================
+   SELLER
+========================= */
+
+document.getElementById(
+    "animalOrigin"
+).addEventListener(
+    "change",
+    () => {
+
+        const sellerGroup =
+            document.getElementById(
+                "sellerGroup"
+            );
+
+
+        sellerGroup.style.display =
+            document.getElementById(
+                "animalOrigin"
+            ).value === "Purchased"
             ? "block"
             : "none";
-});
-    document.getElementById("saveAnimal")
-    .addEventListener("click", () => {
+
+    }
+);
+
+
+/* =========================
+   SAVE ANIMAL
+========================= */
+
+document.getElementById(
+    "saveAnimal"
+).addEventListener(
+    "click",
+    () => {
 
         const tag =
-            document.getElementById("animalTag").value.trim();
+            document.getElementById(
+                "animalTag"
+            ).value.trim();
+
 
         if (!tag) {
-            alert("Please enter a tag or NLIS number.");
+
+            alert(
+                "Please enter a tag number."
+            );
+
             return;
+
         }
+
+
+        if (
+            cattle.some(
+                a =>
+                    String(a.tag)
+                        .trim()
+                        .toLowerCase() ===
+                    tag.toLowerCase()
+            )
+        ) {
+
+            alert(
+                "That tag number is already in GrazeLink."
+            );
+
+            return;
+
+        }
+
+
+        const startingInput =
+            document.getElementById(
+                "animalStartingWeight"
+            ).value.trim();
+
+
+        const startingWeight =
+            Number(startingInput);
+
+
+        const hasStartingWeight =
+            startingInput !== "" &&
+            Number.isFinite(
+                startingWeight
+            ) &&
+            startingWeight > 0;
+
+
+        const createdDate =
+            todayString();
+
 
         const animal = {
 
-            id: Date.now().toString(),
+            id:
+                Date.now().toString(),
 
-            tag: tag,
-            nlis: document.getElementById("animalNlis").value.trim(),
+            tag,
+
+            nlis:
+                document.getElementById(
+                    "animalNlis"
+                ).value.trim(),
+
             sex:
-                document.getElementById("animalSex").value,
+                document.getElementById(
+                    "animalSex"
+                ).value,
 
             breed:
-                document.getElementById("animalBreed").value.trim(),
+                document.getElementById(
+                    "animalBreed"
+                ).value.trim(),
 
             dob:
-                document.getElementById("animalDob").value,
+                document.getElementById(
+                    "animalDob"
+                ).value,
 
             dam:
-                document.getElementById("animalDam").value,
+                document.getElementById(
+                    "animalDam"
+                ).value,
 
             sire:
-                document.getElementById("animalSire").value,
+                document.getElementById(
+                    "animalSire"
+                ).value,
 
             origin:
-                document.getElementById("animalOrigin").value,
+                document.getElementById(
+                    "animalOrigin"
+                ).value,
 
             seller:
-                document.getElementById("animalSeller").value.trim(),
+                document.getElementById(
+                    "animalSeller"
+                ).value.trim(),
 
             paddock:
-                document.getElementById("animalPaddock").value.trim(),
+                document.getElementById(
+                    "animalPaddock"
+                ).value.trim(),
 
             startingWeight:
-  Number(document.getElementById("animalStartingWeight").value) || null,
+                hasStartingWeight
+                ? startingWeight
+                : null,
 
-currentWeight:
-  Number(document.getElementById("animalStartingWeight").value) || null,
+            currentWeight:
+                hasStartingWeight
+                ? startingWeight
+                : null,
 
-weights: document.getElementById("animalStartingWeight").value
-  ? [{
-      date: new Date().toISOString().split("T")[0],
-      weight: Number(document.getElementById("animalStartingWeight").value)
-    }]
-  : []
+            createdDate,
+
+            weights:
+                hasStartingWeight
+                ? [
+                    {
+                        date:
+                            createdDate,
+
+                        weight:
+                            startingWeight
+                    }
+                  ]
+                : []
 
         };
 
-        cattle.push(animal);
+
+        cattle.push(
+            animal
+        );
+
 
         saveData();
 
-        showPage("cattle");
 
-    });
+        showPage(
+            "cattle"
+        );
 
+    }
+);
+
+
+/* =========================
+   ANIMAL HELPERS
+========================= */
 
 function findAnimal(id) {
-    return cattle.find(a => a.id === id);
+
+    return cattle.find(
+        a => a.id === id
+    );
+
 }
 
 
 function parentName(id) {
 
-    if (!id) return "Not recorded";
+    if (!id) {
+        return "Not recorded";
+    }
 
-    const parent = findAnimal(id);
 
-    return parent ? parent.tag : "Unknown";
+    const parent =
+        findAnimal(id);
+
+
+    return parent
+        ? parent.tag
+        : "Unknown";
 
 }
 
 
-function openAnimal(id) {
+/* =========================
+   WEIGHT HISTORY
+========================= */
 
-    const animal = findAnimal(id);
+function ensureWeightHistory(
+    animal
+) {
 
-    if (!animal) return;
+    if (
+        !Array.isArray(
+            animal.weights
+        )
+    ) {
 
-    const offspring = cattle.filter(a =>
-        a.dam === animal.id ||
-        a.sire === animal.id
+        animal.weights = [];
+
+    }
+
+
+    animal.weights =
+        animal.weights
+            .filter(
+                w =>
+                    w &&
+                    w.date &&
+                    Number(w.weight) > 0
+            )
+            .sort(
+                (a, b) =>
+                    String(a.date)
+                        .localeCompare(
+                            String(b.date)
+                        )
+            );
+
+
+    /*
+     * Old records that only have a
+     * starting weight are converted
+     * into the first weight record.
+     */
+
+    if (
+        animal.weights.length === 0 &&
+        animal.startingWeight != null &&
+        Number(
+            animal.startingWeight
+        ) > 0
+    ) {
+
+        animal.weights.push({
+
+            date:
+                animal.createdDate ||
+                todayString(),
+
+            weight:
+                Number(
+                    animal.startingWeight
+                )
+
+        });
+
+    }
+
+
+    /*
+     * Preserve old currentWeight data
+     * if it isn't already in history.
+     */
+
+    if (
+        animal.currentWeight != null &&
+        Number(
+            animal.currentWeight
+        ) > 0
+    ) {
+
+        const last =
+            animal.weights[
+                animal.weights.length - 1
+            ];
+
+
+        if (
+            !last ||
+            Number(last.weight) !==
+            Number(
+                animal.currentWeight
+            )
+        ) {
+
+            animal.weights.push({
+
+                date:
+                    animal.currentWeightDate ||
+                    animal.createdDate ||
+                    todayString(),
+
+                weight:
+                    Number(
+                        animal.currentWeight
+                    )
+
+            });
+
+        }
+
+    }
+
+
+    animal.weights.sort(
+        (a, b) =>
+            String(a.date)
+                .localeCompare(
+                    String(b.date)
+                )
     );
 
 
-    document.getElementById("animalDetailContent").innerHTML = `
+    return animal.weights;
+
+}
+
+
+function getLatestWeight(
+    animal
+) {
+
+    const history =
+        ensureWeightHistory(
+            animal
+        );
+
+
+    if (
+        history.length
+    ) {
+
+        return history[
+            history.length - 1
+        ];
+
+    }
+
+
+    return null;
+
+}
+
+
+function getPreviousWeight(
+    animal
+) {
+
+    const history =
+        ensureWeightHistory(
+            animal
+        );
+
+
+    if (
+        history.length >= 2
+    ) {
+
+        return history[
+            history.length - 2
+        ];
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================
+   ADG CALCULATIONS
+========================= */
+
+function calculateAdg(
+    previous,
+    latest
+) {
+
+    if (
+        !previous ||
+        !latest
+    ) {
+
+        return null;
+
+    }
+
+
+    const days =
+        (
+            new Date(
+                latest.date
+            ) -
+            new Date(
+                previous.date
+            )
+        ) /
+        (
+            1000 *
+            60 *
+            60 *
+            24
+        );
+
+
+    if (
+        !Number.isFinite(days) ||
+        days <= 0
+    ) {
+
+        return null;
+
+    }
+
+
+    return (
+        (
+            Number(
+                latest.weight
+            ) -
+            Number(
+                previous.weight
+            )
+        ) /
+        days
+    );
+
+}
+
+
+function calculateOverallAdg(
+    animal
+) {
+
+    const history =
+        ensureWeightHistory(
+            animal
+        );
+
+
+    if (
+        history.length < 2
+    ) {
+
+        return null;
+
+    }
+
+
+    const first =
+        history[0];
+
+
+    const latest =
+        history[
+            history.length - 1
+        ];
+
+
+    return calculateAdg(
+        first,
+        latest
+    );
+
+}
+
+
+/* =========================
+   ANIMAL DETAIL
+========================= */
+
+function openAnimal(id) {
+
+    const animal =
+        findAnimal(id);
+
+
+    if (!animal) {
+        return;
+    }
+
+
+    ensureWeightHistory(
+        animal
+    );
+
+
+    const latest =
+        getLatestWeight(
+            animal
+        );
+
+
+    const previous =
+        getPreviousWeight(
+            animal
+        );
+
+
+    const latestAdg =
+        calculateAdg(
+            previous,
+            latest
+        );
+
+
+    const overallAdg =
+        calculateOverallAdg(
+            animal
+        );
+
+
+    const offspring =
+        cattle.filter(
+            a =>
+                a.dam === animal.id ||
+                a.sire === animal.id
+        );
+
+
+    const historyRows =
+        animal.weights.length
+        ? animal.weights
+            .map(
+                (
+                    record,
+                    index
+                ) => {
+
+                    const prev =
+                        index > 0
+                        ? animal.weights[
+                            index - 1
+                          ]
+                        : null;
+
+
+                    const adg =
+                        calculateAdg(
+                            prev,
+                            record
+                        );
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+                                ${escapeHtml(
+                                    formatDate(
+                                        record.date
+                                    )
+                                )}
+                            </td>
+
+                            <td>
+                                ${Number(
+                                    record.weight
+                                ).toFixed(1)}
+                                kg
+                            </td>
+
+                            <td>
+                                ${
+                                    adg != null
+                                    ? adg.toFixed(2) +
+                                      " kg/day"
+                                    : "—"
+                                }
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            )
+            .join("")
+        : `
+
+            <tr>
+
+                <td colspan="3">
+                    No weight records yet.
+                </td>
+
+            </tr>
+
+        `;
+
+
+    document.getElementById(
+        "animalDetailContent"
+    ).innerHTML = `
+
 
         <div class="card">
 
-            <h2>🐄 ${animal.tag}</h2>
+            <h2>
+                🐄 ${escapeHtml(
+                    animal.tag
+                )}
+            </h2>
+
 
             <div class="detail-row">
-            <span>NLIS number</span><br>
-            ${animal.nlis || "Not recorded"}
-            </div>
-            
-            <div class="detail-row">
-                <span>Sex</span><br>
-                ${animal.sex}
+
+                <span>
+                    NLIS number
+                </span>
+
+                <br>
+
+                ${escapeHtml(
+                    animal.nlis ||
+                    "Not recorded"
+                )}
+
             </div>
 
-            <div class="detail-row">
-                <span>Breed</span><br>
-                ${animal.breed || "Not recorded"}
-            </div>
 
             <div class="detail-row">
-                <span>Date of birth</span><br>
-                ${animal.dob || "Not recorded"}
+
+                <span>
+                    Sex
+                </span>
+
+                <br>
+
+                ${escapeHtml(
+                    animal.sex
+                )}
+
             </div>
 
-            <div class="detail-row">
-                <span>Paddock</span><br>
-                ${animal.paddock || "Not recorded"}
-            </div>
 
             <div class="detail-row">
-                <span>Origin</span><br>
-                ${animal.origin || "Not recorded"}
+
+                <span>
+                    Breed
+                </span>
+
+                <br>
+
+                ${escapeHtml(
+                    animal.breed ||
+                    "Not recorded"
+                )}
+
             </div>
 
-            <div class="detail-row">
-                <span>Seller</span><br>
-                ${animal.seller || "Not recorded"}
-            </div>
 
             <div class="detail-row">
-                <span>Current weight</span><br>
-                ${animal.currentWeight != null ? animal.currentWeight + " kg" : "Not recorded"}
-                </div>
+
+                <span>
+                    Date of birth
+                </span>
+
+                <br>
+
+                ${escapeHtml(
+                    animal.dob ||
+                    "Not recorded"
+                )}
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Paddock
+                </span>
+
+                <br>
+
+                ${escapeHtml(
+                    animal.paddock ||
+                    "Not recorded"
+                )}
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Origin
+                </span>
+
+                <br>
+
+                ${escapeHtml(
+                    animal.origin ||
+                    "Not recorded"
+                )}
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Seller
+                </span>
+
+                <br>
+
+                ${escapeHtml(
+                    animal.seller ||
+                    "Not recorded"
+                )}
+
+            </div>
+
+        </div>
+
 
         <div class="card">
 
-            <h3>🧬 Genetics</h3>
+            <h3>
+                🧬 Genetics
+            </h3>
+
 
             <div class="detail-row">
-                <span>Dam</span><br>
-                ${parentName(animal.dam)}
+
+                <span>
+                    Dam
+                </span>
+
+                <br>
+
+                ${escapeHtml(
+                    parentName(
+                        animal.dam
+                    )
+                )}
+
             </div>
+
 
             <div class="detail-row">
-                <span>Sire</span><br>
-                ${parentName(animal.sire)}
+
+                <span>
+                    Sire
+                </span>
+
+                <br>
+
+                ${escapeHtml(
+                    parentName(
+                        animal.sire
+                    )
+                )}
+
             </div>
 
-            <h4>Offspring</h4>
+
+            <h4>
+                Offspring
+            </h4>
+
 
             ${
                 offspring.length
-                ? offspring.map(o =>
-                    `<div class="detail-row">
-                        ${o.tag} · ${o.sex}
-                    </div>`
-                ).join("")
-                : '<div class="tag">No offspring recorded.</div>'
+                ? offspring
+                    .map(
+                        o =>
+                            `<div class="detail-row">
+                                ${escapeHtml(o.tag)}
+                                ·
+                                ${escapeHtml(o.sex)}
+                            </div>`
+                    )
+                    .join("")
+                :
+                    '<div class="tag">' +
+                    'No offspring recorded.' +
+                    '</div>'
             }
 
         </div>
@@ -849,143 +2677,1670 @@ function openAnimal(id) {
 
         <div class="card">
 
-            <h3>⚖️ Weights & ADG</h3>
+            <h3>
+                ⚖️ Weights & ADG
+            </h3>
 
-            <div class="detail-row">
-                <span> Starting weight: </span><br>
-                <strong>
-                    ${animal.startingWeight
-                        ? animal.startingWeight + " kg"
-                        : "Not recorded"}
-                </strong>
-            
+
+            <div class="summary-grid">
+
+
+                <div class="summary-box">
+
+                    <div class="label">
+                        Starting weight
+                    </div>
+
+                    <div class="value">
+
+                        ${
+                            animal.startingWeight != null
+                            ? Number(
+                                animal.startingWeight
+                              ).toFixed(1) +
+                              " kg"
+                            : "—"
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <div class="label">
+                        Current weight
+                    </div>
+
+                    <div class="value">
+
+                        ${
+                            latest
+                            ? Number(
+                                latest.weight
+                              ).toFixed(1) +
+                              " kg"
+                            : "—"
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <div class="label">
+                        Latest ADG
+                    </div>
+
+                    <div class="value">
+
+                        ${
+                            latestAdg != null
+                            ? latestAdg.toFixed(2) +
+                              " kg/day"
+                            : "—"
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <div class="label">
+                        Overall ADG
+                    </div>
+
+                    <div class="value">
+
+                        ${
+                            overallAdg != null
+                            ? overallAdg.toFixed(2) +
+                              " kg/day"
+                            : "—"
+                        }
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <h4>
+                Weight history
+            </h4>
+
+
+            <div class="table-wrap">
+
+                <table class="history-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Weight
+                            </th>
+
+                            <th>
+                                ADG from previous
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        ${historyRows}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <br>
+
+
+            <button
+                class="primary"
+                onclick="showPage('weights')">
+
+                + Record another weight
+
+            </button>
+
 
         </div>
 
     `;
 
-    showPage("animalDetail");
+
+    showPage(
+        "animalDetail"
+    );
+
 }
 
 
+/* =========================
+   WEIGHT ANIMAL DROPDOWN
+========================= */
+
+function populateWeightAnimalSelect() {
+
+    const select =
+        document.getElementById(
+            "weightAnimalSelect"
+        );
+
+
+    const current =
+        select.value;
+
+
+    const sorted =
+        [...cattle].sort(
+            (a, b) =>
+                String(a.tag)
+                    .localeCompare(
+                        String(b.tag),
+                        undefined,
+                        {
+                            numeric: true,
+                            sensitivity: "base"
+                        }
+                    )
+        );
+
+
+    select.innerHTML =
+        '<option value="">' +
+        'Select animal' +
+        '</option>' +
+
+
+        sorted
+            .map(
+                a =>
+                    `<option value="${escapeHtml(a.id)}">
+                        ${escapeHtml(a.tag)}
+                        ·
+                        ${escapeHtml(a.sex)}
+                    </option>`
+            )
+            .join("");
+
+
+    if (
+        sorted.some(
+            a => a.id === current
+        )
+    ) {
+
+        select.value =
+            current;
+
+    }
+
+}
+
+
+/* =========================
+   FILTER DROPDOWNS
+========================= */
+
+function populateWeightFilters() {
+
+    const breedSelect =
+        document.getElementById(
+            "weightBreedFilter"
+        );
+
+
+    const paddockSelect =
+        document.getElementById(
+            "weightPaddockFilter"
+        );
+
+
+    const currentBreed =
+        breedSelect.value;
+
+
+    const currentPaddock =
+        paddockSelect.value;
+
+
+    const breeds =
+        [
+            ...new Set(
+                cattle
+                    .map(
+                        a =>
+                            String(
+                                a.breed ||
+                                ""
+                            ).trim()
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort(
+            (a, b) =>
+                a.localeCompare(b)
+        );
+
+
+    const paddocks =
+        [
+            ...new Set(
+                cattle
+                    .map(
+                        a =>
+                            String(
+                                a.paddock ||
+                                ""
+                            ).trim()
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort(
+            (a, b) =>
+                a.localeCompare(b)
+        );
+
+
+    breedSelect.innerHTML =
+        '<option value="">' +
+        'All breeds' +
+        '</option>' +
+
+        breeds
+            .map(
+                b =>
+                    `<option value="${escapeHtml(b)}">
+                        ${escapeHtml(b)}
+                    </option>`
+            )
+            .join("");
+
+
+    paddockSelect.innerHTML =
+        '<option value="">' +
+        'All paddocks' +
+        '</option>' +
+
+        paddocks
+            .map(
+                p =>
+                    `<option value="${escapeHtml(p)}">
+                        ${escapeHtml(p)}
+                    </option>`
+            )
+            .join("");
+
+
+    if (
+        breeds.includes(
+            currentBreed
+        )
+    ) {
+
+        breedSelect.value =
+            currentBreed;
+
+    }
+
+
+    if (
+        paddocks.includes(
+            currentPaddock
+        )
+    ) {
+
+        paddockSelect.value =
+            currentPaddock;
+
+    }
+
+}
+
+
+/* =========================
+   FILTER / SORT
+========================= */
+
+function getFilteredWeightAnimals() {
+
+    const search =
+        document.getElementById(
+            "weightSearch"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    const sex =
+        document.getElementById(
+            "weightSexFilter"
+        ).value;
+
+
+    const breed =
+        document.getElementById(
+            "weightBreedFilter"
+        ).value;
+
+
+    const paddock =
+        document.getElementById(
+            "weightPaddockFilter"
+        ).value;
+
+
+    const sort =
+        document.getElementById(
+            "weightSort"
+        ).value;
+
+
+    let rows =
+        cattle.filter(
+            a => {
+
+                const matchesSearch =
+                    !search ||
+
+                    String(
+                        a.tag || ""
+                    )
+                    .toLowerCase()
+                    .includes(search) ||
+
+                    String(
+                        a.nlis || ""
+                    )
+                    .toLowerCase()
+                    .includes(search);
+
+
+                const matchesSex =
+                    !sex ||
+                    a.sex === sex;
+
+
+                const matchesBreed =
+                    !breed ||
+                    String(
+                        a.breed || ""
+                    ) === breed;
+
+
+                const matchesPaddock =
+                    !paddock ||
+                    String(
+                        a.paddock || ""
+                    ) === paddock;
+
+
+                return (
+                    matchesSearch &&
+                    matchesSex &&
+                    matchesBreed &&
+                    matchesPaddock
+                );
+
+            }
+        );
+
+
+    rows.forEach(
+        animal =>
+            ensureWeightHistory(
+                animal
+            )
+    );
+
+
+    rows.sort(
+        (a, b) => {
+
+            const latestA =
+                getLatestWeight(a);
+
+            const latestB =
+                getLatestWeight(b);
+
+
+            const previousA =
+                getPreviousWeight(a);
+
+            const previousB =
+                getPreviousWeight(b);
+
+
+            const adgA =
+                calculateAdg(
+                    previousA,
+                    latestA
+                );
+
+
+            const adgB =
+                calculateAdg(
+                    previousB,
+                    latestB
+                );
+
+
+            const overallA =
+                calculateOverallAdg(a);
+
+            const overallB =
+                calculateOverallAdg(b);
+
+
+            const startA =
+                a.startingWeight != null
+                ? Number(
+                    a.startingWeight
+                  )
+                : 0;
+
+
+            const startB =
+                b.startingWeight != null
+                ? Number(
+                    b.startingWeight
+                  )
+                : 0;
+
+
+            const currentA =
+                latestA
+                ? Number(
+                    latestA.weight
+                  )
+                : 0;
+
+
+            const currentB =
+                latestB
+                ? Number(
+                    latestB.weight
+                  )
+                : 0;
+
+
+            const gainA =
+                currentA -
+                startA;
+
+
+            const gainB =
+                currentB -
+                startB;
+
+
+            switch (sort) {
+
+                case "sex":
+
+                    return String(
+                        a.sex
+                    ).localeCompare(
+                        String(b.sex)
+                    );
+
+
+                case "breed":
+
+                    return String(
+                        a.breed || ""
+                    ).localeCompare(
+                        String(
+                            b.breed || ""
+                        )
+                    );
+
+
+                case "paddock":
+
+                    return String(
+                        a.paddock || ""
+                    ).localeCompare(
+                        String(
+                            b.paddock || ""
+                        )
+                    );
+
+
+                case "startingWeight":
+
+                    return (
+                        startB -
+                        startA
+                    );
+
+
+                case "currentWeight":
+
+                    return (
+                        currentB -
+                        currentA
+                    );
+
+
+                case "gain":
+
+                    return (
+                        gainB -
+                        gainA
+                    );
+
+
+                case "adg":
+
+                    return (
+                        (adgB ?? -Infinity) -
+                        (adgA ?? -Infinity)
+                    );
+
+
+                case "overallAdg":
+
+                    return (
+                        (overallB ?? -Infinity) -
+                        (overallA ?? -Infinity)
+                    );
+
+
+                case "date":
+
+                    return String(
+                        latestB?.date || ""
+                    ).localeCompare(
+                        String(
+                            latestA?.date || ""
+                        )
+                    );
+
+
+                case "tag":
+
+                default:
+
+                    return String(
+                        a.tag
+                    ).localeCompare(
+                        String(
+                            b.tag
+                        ),
+                        undefined,
+                        {
+                            numeric: true,
+                            sensitivity: "base"
+                        }
+                    );
+
+            }
+
+        }
+    );
+
+
+    return rows;
+
+}
+
+
+/* =========================
+   WEIGHT TABLE
+========================= */
+
+function renderWeightTable() {
+
+    const container =
+        document.getElementById(
+            "weightTableContainer"
+        );
+
+
+    const rows =
+        getFilteredWeightAnimals();
+
+
+    if (
+        rows.length === 0
+    ) {
+
+        container.innerHTML =
+            '<div class="empty">' +
+            'No cattle match your filters.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    const tableRows =
+        rows
+            .map(
+                a => {
+
+                    const history =
+                        ensureWeightHistory(
+                            a
+                        );
+
+
+                    const starting =
+                        a.startingWeight != null
+                        ? Number(
+                            a.startingWeight
+                          )
+                        : (
+                            history.length
+                            ? Number(
+                                history[0].weight
+                              )
+                            : null
+                          );
+
+
+                    const latest =
+                        getLatestWeight(
+                            a
+                        );
+
+
+                    const previous =
+                        getPreviousWeight(
+                            a
+                        );
+
+
+                    const latestAdg =
+                        calculateAdg(
+                            previous,
+                            latest
+                        );
+
+
+                    const overallAdg =
+                        calculateOverallAdg(
+                            a
+                        );
+
+
+                    const gain =
+                        starting != null &&
+                        latest
+                        ? Number(
+                            latest.weight
+                          ) -
+                          starting
+                        : null;
+
+
+                    const gainClass =
+                        gain == null
+                        ? ""
+                        : gain >= 0
+                        ? "adg-good"
+                        : "adg-negative";
+
+
+                    const historyId =
+                        "history_" +
+                        a.id;
+
+
+                    return `
+
+                        <tr>
+
+
+                            <td>
+
+                                <span
+                                    class="tag-link"
+                                    onclick="openAnimal('${escapeHtml(a.id)}')">
+
+                                    ${escapeHtml(
+                                        a.tag
+                                    )}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                ${escapeHtml(
+                                    a.sex
+                                )}
+                            </td>
+
+
+                            <td>
+                                ${escapeHtml(
+                                    a.breed ||
+                                    "—"
+                                )}
+                            </td>
+
+
+                            <td>
+                                ${escapeHtml(
+                                    a.paddock ||
+                                    "—"
+                                )}
+                            </td>
+
+
+                            <td class="number">
+
+                                ${
+                                    starting != null
+                                    ? starting.toFixed(1)
+                                    : "—"
+                                }
+
+                            </td>
+
+
+                            <td class="number">
+
+                                ${
+                                    previous
+                                    ? Number(
+                                        previous.weight
+                                      ).toFixed(1)
+                                    : "—"
+                                }
+
+                            </td>
+
+
+                            <td class="number">
+
+                                ${
+                                    latest
+                                    ? Number(
+                                        latest.weight
+                                      ).toFixed(1)
+                                    : "—"
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                ${
+                                    latest?.date
+                                    ? formatDate(
+                                        latest.date
+                                      )
+                                    : "—"
+                                }
+
+                            </td>
+
+
+                            <td
+                                class="number ${gainClass}">
+
+                                ${
+                                    gain != null
+                                    ? (
+                                        gain >= 0
+                                        ? "+"
+                                        : ""
+                                      ) +
+                                      gain.toFixed(1)
+                                    : "—"
+                                }
+
+                            </td>
+
+
+                            <td class="number">
+
+                                ${
+                                    latestAdg != null
+                                    ? latestAdg.toFixed(2)
+                                    : "—"
+                                }
+
+                            </td>
+
+
+                            <td class="number">
+
+                                ${
+                                    overallAdg != null
+                                    ? overallAdg.toFixed(2)
+                                    : "—"
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                <button
+                                    class="small"
+                                    onclick="toggleWeightHistory('${escapeHtml(historyId)}')">
+
+                                    History
+
+                                </button>
+
+                            </td>
+
+
+                        </tr>
+
+
+                        <tr
+                            id="${escapeHtml(historyId)}"
+                            class="history-row">
+
+                            <td colspan="12">
+
+
+                                <div class="history-inner">
+
+                                    <strong>
+
+                                        ${escapeHtml(
+                                            a.tag
+                                        )}
+
+                                        —
+                                        Weight history
+
+                                    </strong>
+
+
+                                    <div
+                                        class="table-wrap"
+                                        style="margin-top:8px;">
+
+                                        <table
+                                            class="history-table">
+
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th>
+                                                        Date
+                                                    </th>
+
+                                                    <th>
+                                                        Weight
+                                                    </th>
+
+                                                    <th>
+                                                        Gain
+                                                    </th>
+
+                                                    <th>
+                                                        ADG
+                                                    </th>
+
+                                                </tr>
+
+                                            </thead>
+
+
+                                            <tbody>
+
+
+                                                ${
+                                                    history.length
+
+                                                    ?
+
+                                                    history
+                                                        .map(
+                                                            (
+                                                                record,
+                                                                index
+                                                            ) => {
+
+                                                                const prev =
+                                                                    index > 0
+                                                                    ? history[
+                                                                        index - 1
+                                                                      ]
+                                                                    : null;
+
+
+                                                                const adg =
+                                                                    calculateAdg(
+                                                                        prev,
+                                                                        record
+                                                                    );
+
+
+                                                                const intervalGain =
+                                                                    prev
+                                                                    ? Number(
+                                                                        record.weight
+                                                                      ) -
+                                                                      Number(
+                                                                        prev.weight
+                                                                      )
+                                                                    : null;
+
+
+                                                                return `
+
+                                                                    <tr>
+
+                                                                        <td>
+
+                                                                            ${escapeHtml(
+                                                                                formatDate(
+                                                                                    record.date
+                                                                                )
+                                                                            )}
+
+                                                                        </td>
+
+
+                                                                        <td>
+
+                                                                            ${Number(
+                                                                                record.weight
+                                                                            ).toFixed(1)}
+
+                                                                            kg
+
+                                                                        </td>
+
+
+                                                                        <td>
+
+                                                                            ${
+                                                                                intervalGain != null
+
+                                                                                ?
+
+                                                                                (
+                                                                                    intervalGain >= 0
+                                                                                    ? "+"
+                                                                                    : ""
+                                                                                ) +
+                                                                                intervalGain.toFixed(1) +
+                                                                                " kg"
+
+                                                                                :
+
+                                                                                "—"
+                                                                            }
+
+                                                                        </td>
+
+
+                                                                        <td>
+
+                                                                            ${
+                                                                                adg != null
+                                                                                ? adg.toFixed(2) +
+                                                                                  " kg/day"
+                                                                                : "—"
+                                                                            }
+
+                                                                        </td>
+
+                                                                    </tr>
+
+                                                                `;
+
+                                                            }
+                                                        )
+                                                        .join("")
+
+                                                    :
+
+                                                    `
+
+                                                        <tr>
+
+                                                            <td colspan="4">
+
+                                                                No weight records.
+
+                                                            </td>
+
+                                                        </tr>
+
+                                                    `
+                                                }
+
+
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+
+    container.innerHTML = `
+
+        <div class="table-wrap">
+
+            <table class="weight-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Tag
+                        </th>
+
+                        <th>
+                            Sex
+                        </th>
+
+                        <th>
+                            Breed
+                        </th>
+
+                        <th>
+                            Paddock
+                        </th>
+
+                        <th class="number">
+                            Starting kg
+                        </th>
+
+                        <th class="number">
+                            Previous kg
+                        </th>
+
+                        <th class="number">
+                            Current kg
+                        </th>
+
+                        <th>
+                            Current date
+                        </th>
+
+                        <th class="number">
+                            Total gain kg
+                        </th>
+
+                        <th class="number">
+                            Latest ADG
+                        </th>
+
+                        <th class="number">
+                            Overall ADG
+                        </th>
+
+                        <th>
+                            History
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    ${tableRows}
+
+                </tbody>
+
+
+            </table>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================
+   HISTORY BUTTON
+========================= */
+
+function toggleWeightHistory(
+    id
+) {
+
+    const row =
+        document.getElementById(
+            id
+        );
+
+
+    if (!row) return;
+
+
+    row.classList.toggle(
+        "open"
+    );
+
+}
+
+
+/* =========================
+   WEIGHT PAGE
+========================= */
+
+function renderWeightPage() {
+
+    populateWeightAnimalSelect();
+
+    populateWeightFilters();
+
+    renderWeightTable();
+
+
+    const dateInput =
+        document.getElementById(
+            "weightRecordDate"
+        );
+
+
+    if (!dateInput.value) {
+
+        dateInput.value =
+            todayString();
+
+    }
+
+}
+
+
+/* =========================
+   SHOW PREVIOUS WEIGHT
+========================= */
+
+document.getElementById(
+    "weightAnimalSelect"
+).addEventListener(
+    "change",
+    () => {
+
+        const animalId =
+            document.getElementById(
+                "weightAnimalSelect"
+            ).value;
+
+
+        const message =
+            document.getElementById(
+                "weightEntryMessage"
+            );
+
+
+        if (!animalId) {
+
+            message.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        const animal =
+            findAnimal(
+                animalId
+            );
+
+
+        if (!animal) return;
+
+
+        const latest =
+            getLatestWeight(
+                animal
+            );
+
+
+        const previous =
+            getPreviousWeight(
+                animal
+            );
+
+
+        const latestAdg =
+            calculateAdg(
+                previous,
+                latest
+            );
+
+
+        message.style.display =
+            "block";
+
+
+        message.innerHTML = `
+
+            <strong>
+                ${escapeHtml(
+                    animal.tag
+                )}
+            </strong>
+
+            ·
+            ${escapeHtml(
+                animal.sex
+            )}
+
+            · Last weight:
+
+            <strong>
+
+                ${
+                    latest
+                    ? Number(
+                        latest.weight
+                      ).toFixed(1) +
+                      " kg"
+                    : "No previous weight"
+                }
+
+            </strong>
+
+
+            ${
+                latest?.date
+                ? " on " +
+                  escapeHtml(
+                      formatDate(
+                          latest.date
+                      )
+                  )
+                : ""
+            }
+
+
+            ${
+                latestAdg != null
+                ? " · Latest ADG: <strong>" +
+                  latestAdg.toFixed(2) +
+                  " kg/day</strong>"
+                : ""
+            }
+
+        `;
+
+    }
+);
+
+
+/* =========================
+   RECORD WEIGHT
+========================= */
+
+document.getElementById(
+    "recordWeightBtn"
+).addEventListener(
+    "click",
+    () => {
+
+        const animalId =
+            document.getElementById(
+                "weightAnimalSelect"
+            ).value;
+
+
+        const date =
+            document.getElementById(
+                "weightRecordDate"
+            ).value;
+
+
+        const weight =
+            Number(
+                document.getElementById(
+                    "weightRecordValue"
+                ).value
+            );
+
+
+        const message =
+            document.getElementById(
+                "weightEntryMessage"
+            );
+
+
+        if (
+            !animalId ||
+            !date ||
+            !Number.isFinite(weight) ||
+            weight <= 0
+        ) {
+
+            message.style.display =
+                "block";
+
+
+            message.innerHTML =
+                "Please select an animal and enter the date and weight.";
+
+
+            return;
+
+        }
+
+
+        const animal =
+            findAnimal(
+                animalId
+            );
+
+
+        if (!animal) {
+
+            message.style.display =
+                "block";
+
+
+            message.innerHTML =
+                "Animal not found.";
+
+
+            return;
+
+        }
+
+
+        ensureWeightHistory(
+            animal
+        );
+
+
+        /*
+         * If the same animal is weighed
+         * on the same date twice, the
+         * existing record is updated.
+         *
+         * Otherwise a new historical
+         * record is added.
+         */
+
+        const existingIndex =
+            animal.weights.findIndex(
+                w =>
+                    w.date === date
+            );
+
+
+        if (
+            existingIndex >= 0
+        ) {
+
+            animal.weights[
+                existingIndex
+            ].weight =
+                weight;
+
+        } else {
+
+            animal.weights.push({
+
+                date:
+                    date,
+
+                weight:
+                    weight
+
+            });
+
+        }
+
+
+        /*
+         * Keep the history in date order.
+         */
+
+        animal.weights.sort(
+            (a, b) =>
+                String(a.date)
+                    .localeCompare(
+                        String(b.date)
+                    )
+        );
+
+
+        /*
+         * Current weight is always
+         * the latest dated weight.
+         */
+
+        const latest =
+            getLatestWeight(
+                animal
+            );
+
+
+        if (latest) {
+
+            animal.currentWeight =
+                Number(
+                    latest.weight
+                );
+
+            animal.currentWeightDate =
+                latest.date;
+
+        }
+
+
+        saveData();
+
+
+        const previous =
+            getPreviousWeight(
+                animal
+            );
+
+
+        const latestAdg =
+            calculateAdg(
+                previous,
+                latest
+            );
+
+
+        message.style.display =
+            "block";
+
+
+        message.innerHTML = `
+
+            <strong>
+                ${escapeHtml(
+                    animal.tag
+                )}
+            </strong>
+
+            saved:
+
+            <strong>
+                ${weight.toFixed(1)} kg
+            </strong>
+
+            on
+
+            <strong>
+                ${escapeHtml(
+                    formatDate(
+                        date
+                    )
+                )}
+            </strong>
+
+
+            ${
+                latestAdg != null
+                ? " · Latest ADG: <strong>" +
+                  latestAdg.toFixed(2) +
+                  " kg/day</strong>"
+                : ""
+            }
+
+        `;
+
+
+        document.getElementById(
+            "weightRecordValue"
+        ).value = "";
+
+
+        /*
+         * Rebuild the table but
+         * preserve the selected animal.
+         */
+
+        renderWeightPage();
+
+
+        document.getElementById(
+            "weightAnimalSelect"
+        ).value =
+            animal.id;
+
+
+        document.getElementById(
+            "weightAnimalSelect"
+        ).dispatchEvent(
+            new Event("change")
+        );
+
+    }
+);
+
+
+/* =========================
+   FILTER EVENTS
+========================= */
+
+document.getElementById(
+    "weightSearch"
+).addEventListener(
+    "input",
+    renderWeightTable
+);
+
+
+document.getElementById(
+    "weightSexFilter"
+).addEventListener(
+    "change",
+    renderWeightTable
+);
+
+
+document.getElementById(
+    "weightBreedFilter"
+).addEventListener(
+    "change",
+    renderWeightTable
+);
+
+
+document.getElementById(
+    "weightPaddockFilter"
+).addEventListener(
+    "change",
+    renderWeightTable
+);
+
+
+document.getElementById(
+    "weightSort"
+).addEventListener(
+    "change",
+    renderWeightTable
+);
+
+
+/* =========================
+   CONVERT EXISTING DATA
+========================= */
+
+cattle.forEach(
+    animal => {
+
+        ensureWeightHistory(
+            animal
+        );
+
+
+        const latest =
+            getLatestWeight(
+                animal
+            );
+
+
+        if (latest) {
+
+            animal.currentWeight =
+                Number(
+                    latest.weight
+                );
+
+            animal.currentWeightDate =
+                latest.date;
+
+        }
+
+    }
+);
+
+
+saveData();
+
+
 updateDashboard();
+
 renderAnimals();
-    
-document.getElementById("recordWeightBtn").addEventListener("click", () => {
-
-  const tag = document.getElementById("weightAnimalTag").value.trim();
-  const date = document.getElementById("weightRecordDate").value;
-  const weight = Number(document.getElementById("weightRecordValue").value);
-
-  if (!tag || !date || !weight) {
-    alert("Please enter the animal tag, date and weight.");
-    return;
-  }
-
-  const animal = cattle.find(a => String(a.tag).trim() === tag);
-
-  if (!animal) {
-    alert("Animal not found.");
-    return;
-  }
-
-  if (!animal.weights) {
-    animal.weights = [];
-  }
-
-  const previous = animal.weights.length
-    ? animal.weights[animal.weights.length - 1]
-    : null;
-
-  let adg = null;
-
-  if (previous) {
-    const days =
-      (new Date(date) - new Date(previous.date))
-      / (1000 * 60 * 60 * 24);
-
-    if (days > 0) {
-      adg = (weight - Number(previous.weight)) / days;
-    }
-  }
-
-  animal.weights.push({
-    date: date,
-    weight: weight
-  });
-
-  animal.currentWeight = weight;
-
-  saveData();
-
-  let result = `
-    <h3>Animal ${animal.tag}</h3>
-
-    <p>
-      <strong>Previous weight:</strong>
-      ${previous ? previous.weight + " kg" : "No previous weight"}
-    </p>
-
-    <p>
-      <strong>Previous date:</strong>
-      ${previous ? previous.date : "—"}
-    </p>
-
-    <p>
-      <strong>New weight:</strong>
-      ${weight} kg
-    </p>
-  `;
-
-  if (adg !== null) {
-    result += `
-      <p>
-        <strong>ADG:</strong>
-        ${adg.toFixed(2)} kg/day
-      </p>
-    `;
-  }
-
-  result += `
-    <h3>Weight history</h3>
-
-    <div class="detail-row">
-  `;
-
-  animal.weights.forEach((record, index) => {
-
-    let recordAdg = "";
-
-    if (index > 0) {
-      const previousRecord = animal.weights[index - 1];
-
-      const days =
-        (new Date(record.date) - new Date(previousRecord.date))
-        / (1000 * 60 * 60 * 24);
-
-      if (days > 0) {
-        const gain =
-          Number(record.weight) - Number(previousRecord.weight);
-
-        recordAdg =
-          ` — ADG: ${(gain / days).toFixed(2)} kg/day`;
-      }
-    }
-
-    result += `
-      <p>
-        <strong>${record.date}</strong>
-        — ${record.weight} kg${recordAdg}
-      </p>
-    `;
-  });
-
-  result += `</div>`;
-
-  document.getElementById("weightResult").innerHTML = result;
-
-  document.getElementById("weightRecordValue").value = "";
-});
 
 </script>
 
