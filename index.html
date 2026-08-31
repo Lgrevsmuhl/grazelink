@@ -697,12 +697,12 @@ document.getElementById("animalOrigin").addEventListener("change", () => {
             currentWeight:
                 Number(document.getElementById("animalCurrentWeight").value) || null,
                                         
-            weights: [
-    {
-        date: new Date().toISOString().split("T")[0],
-        weight: Number(document.getElementById("animalCurrentWeight").value) || null
-    }
-]
+         weights: document.getElementById("animalStartingWeight").value
+    ? [{
+        date: document.getElementById("animalWeightDate").value,
+        weight: Number(document.getElementById("animalStartingWeight").value)
+    }]
+    : []
 
         };
 
