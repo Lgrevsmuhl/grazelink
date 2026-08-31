@@ -639,7 +639,15 @@ document.getElementById("backFromDetail")
     .addEventListener("click", () => showPage("cattle"));
 
 
-document.getElementById("saveAnimal")
+
+document.getElementById("animalOrigin").addEventListener("change", () => {
+    const sellerGroup = document.getElementById("sellerGroup");
+    sellerGroup.style.display =
+        document.getElementById("animalOrigin").value === "Purchased"
+            ? "block"
+            : "none";
+});
+    document.getElementById("saveAnimal")
     .addEventListener("click", () => {
 
         const tag =
