@@ -7,7 +7,44 @@
 
 <style>
 * { box-sizing: border-box; }
+#loginScreen {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    text-align: center;
+}
 
+#loginScreen h2 {
+    margin-bottom: 25px;
+}
+
+#loginScreen input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+#loginButton {
+    width: 100%;
+    padding: 12px;
+    background: #304b32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#loginMessage {
+    color: #c0392b;
+    margin-top: 15px;
+}
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -19,6 +56,7 @@ body {
     max-width: 700px;
     margin: auto;
     min-height: 100vh;
+    display: none;
 }
 
 header {
@@ -181,7 +219,17 @@ input, select {
 
 <body>
 
-<div class="app">
+<div id="loginScreen">
+    <h2>GrazeLink Login</h2>
+
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Password">
+
+    <button id="loginButton">Log in</button>
+
+    <p id="loginMessage"></p>
+</div>
+    <div class="app">
 
 <header>
     <h1>🐄 GrazeLink</h1>
