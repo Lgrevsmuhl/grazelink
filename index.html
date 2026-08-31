@@ -416,7 +416,42 @@ input, select {
 
 </section>
 
+<!-- WEIGHT RECORDS -->
+<section id="weights" class="page">
 
+  <button class="secondary back" onclick="showPage('records')">
+    ← Back
+  </button>
+
+  <h2>Weight Records</h2>
+
+  <div class="card">
+
+    <h3>⚖️ Record Weight</h3>
+
+    <label>Animal Tag / ID</label>
+    <input id="weightAnimalTag" type="text" placeholder="e.g. 1">
+
+    <label>Date weighed</label>
+    <input id="weightRecordDate" type="date">
+
+    <label>Weight (kg)</label>
+    <input id="weightRecordValue" type="number" step="0.1" placeholder="e.g. 366">
+
+    <div class="form-buttons">
+      <button class="primary" id="recordWeightBtn">
+        Record weight
+      </button>
+    </div>
+
+  </div>
+
+  <div class="card" id="weightResult">
+    <h3>Animal Weight Information</h3>
+    <p>Enter an animal tag to see its previous weight and ADG.</p>
+  </div>
+
+</section>
 <!-- RECORDS -->
 <section id="records" class="page">
 
