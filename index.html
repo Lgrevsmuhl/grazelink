@@ -739,33 +739,6 @@ function openAnimal(id) {
         a.sire === animal.id
     );
 
-    let adgText = "No weight records yet.";
-
-    if (animal.weights.length >= 2) {
-
-        const first = animal.weights[0];
-        const last =
-            animal.weights[animal.weights.length - 1];
-
-        const days =
-            (new Date(last.date) - new Date(first.date))
-            / (1000 * 60 * 60 * 24);
-
-        if (days > 0) {
-
-            const gain =
-                Number(last.weight) - Number(first.weight);
-
-            const adg =
-                gain / days;
-
-            adgText =
-                `<div class="adg">${adg.toFixed(2)} kg/day</div>
-                 Overall ADG`;
-
-        }
-
-    }
 
     document.getElementById("animalDetailContent").innerHTML = `
 
@@ -853,11 +826,7 @@ function openAnimal(id) {
                         ? animal.startingWeight + " kg"
                         : "Not recorded"}
                 </strong>
-            </div>
-
-            <div class="detail-row">
-                ${adgText}
-            </div>
+            
 
         </div>
 
